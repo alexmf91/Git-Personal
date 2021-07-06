@@ -64,11 +64,7 @@ function getRandomIntInclusive(min, max) {
 function resetVariables(){
 bingoCard = [];
 bomboNumList = [];
-newNum;
-newBomboNumb;
-showNewBomboNumb;
-numRemoved;
-newBomboNumQuest;
+
 playAgainQuest = false;
 lineComprovation = false;
 }
