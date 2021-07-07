@@ -34,7 +34,7 @@ let rank = [
 //Funcion para poner la primera letra en mayuscula.
 const capitalize = (n) => {
     return n.charAt(0).toUpperCase() + n.slice(1);
-};
+}
 //Funcion para obtener numeros aleatorios comprendidos entre dos valores ambos incluidos.
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -64,11 +64,6 @@ function resetVariables(){
     bomboNumList = [];
     randomNumList = [];
     user = { Player: '', Points: 90 };
-    newBingoCardQuest
-    newNum;
-    showNewBomboNum;
-    newBomboNumQuest;
-    playAgainQuest;
     line1Check = false;
     line2Check = false;
     line3Check = false;
@@ -90,11 +85,10 @@ function newTurn(){
     bingoCard = [];
     while(bingoCard.length<15){
         randomNumberGenerate()
-        if(bingoCard.includes(randomNumList[randomNumList.length-1]) === false && newNum !== isNaN){
-            bingoCard.push(newNum);
-        }else{randomNumberGenerate()}
+        if(!bingoCard.includes(randomNumList[randomNumList.length-1]) && !isNaN(newNum))bingoCard.push(newNum);
+        else randomNumberGenerate()
     }
-    if(bingoCard.length = 15){
+    if(bingoCard.length === 15){
         bingoCard[0] = bingoCard.slice(0, 5);
         bingoCard[1] = bingoCard.slice(5, 10);
         bingoCard[2] = bingoCard.slice(10, 15);
@@ -120,27 +114,23 @@ function changeBingoCard(){
 //Funcion para generar un numero aleatorio sin que se repita. Se hace push a los nuemros aleatorios en una matriz 'baul' y se comrpueva si este numero esta en la matriz bombonumlist, en caso de ser false se pushea ese numero a dicha matriz.
 function newBomboNumber(){
     randomNumberGenerate()
-    if(bomboNumList.includes(randomNumList[randomNumList.length-1]) === false){
+    if(!bomboNumList.includes(randomNumList[randomNumList.length-1])){
         bomboNumList.push(newNum);
         showNewBomboNum = alert(`Bola numero ${newNum}`);
         user.Points--;
-    }else(newBomboNumber())
+    }else newBomboNumber()
 }
 //Funcion para comprobar si el numero generado está en el carton del usuario, de ser asi se sustituiria el numero del carton por una X.
 function numberComprovation(){
-    for(let i = 0; i<bingoCard.length; i++){
-        for(let j=0; j<bingoCard[i].length;j++){
+    for(let i in bingoCard){
+        for(let j in bingoCard[i]){
             if(bomboNumList[bomboNumList.length-1] === bingoCard[i][j]){               //comprovamos si el ultimo elemento del array bombonumlist, que es la utlima bola que ha salido, coincide con algun numero de nuestro carton.
                 console.clear()
                 console.log(`Felicidades el numero ${bingoCard[i][j]} está en tu carton.`)
                 bingoCard[i][j] = 'X';        //En caso de ser true, entonces sustituimos el numero que ha coinciddido en el carton por una 'X'.
                 console.table(bingoCard);       //imprimimos el carton con el cambio realizado.                                        
-                if(line1Check === false && line2Check === false && line3Check === false){
-                line();                                                    //Llamamos a la funcion line para comprovar si hemos hecho linea.
-                }
-                else if(line1Check === true || line2Check === true || line3Check === true){
-                bingo();
-                };      
+                if(!line1Check && !line2Check && !line3Check)line();//Llamamos a la funcion line para comprovar si hemos hecho linea.
+                else if(line1Check || line2Check || line3Check)bingo();                
             }
         }
     }
@@ -148,14 +138,12 @@ function numberComprovation(){
 //Funcion para realizar un alert y notificar al usuario que ha hecho linea en caso de que una de las lineas sea true.
 function line(){
     lineCheck()
-    if(line1Check === true || line2Check === true || line3Check === true){
-        alert('¡Felicidades, has hecho LINEA!\n¡Seguimos para Bingo!');
-    }
+    if(line1Check || line2Check || line3Check)alert('¡Felicidades, has hecho LINEA!\n¡Seguimos para Bingo!');
 }
 //Funcion para realizar un alert en caso de bingo y ofrecer el poder volver a jugar otra partida.
 function bingo(){
     lineCheck()
-    if (line1Check === true && line2Check === true && line3Check === true){
+    if (line1Check && line2Check && line3Check){
     bingoCheck = true;
     alert('¡Felicidades, has hecho BINGOOOO!');
     rank.push(user);
@@ -166,17 +154,19 @@ function bingo(){
 //Funcion bucle para preguntar al usuario si quiere seguir en el juego.
 function bingoLoop(){
     newBomboNumQuest = confirm(`¿Desea que salga una nueva bola?`);
-    if(newBomboNumQuest === true && bingoCheck === false){
+    if(newBomboNumQuest && !bingoCheck){
         newBomboNumber();
         numberComprovation();
         bingoLoop();
-    }else(alert('¡Aquí se acaba el juego entonces, adios!'));
-        playAgain();
+    }else{
+    alert('¡Aquí se acaba el juego entonces, adios!');
+    playAgain();
+    }
 }
 //Funcion para volver a echar otra partida.
 function playAgain(){
     playAgainQuest = confirm('¿Quieres jugar otra vez?')
-    if(playAgainQuest === true){
+    if(playAgainQuest){
         console.clear()
         resetVariables()
         bingoGame()
